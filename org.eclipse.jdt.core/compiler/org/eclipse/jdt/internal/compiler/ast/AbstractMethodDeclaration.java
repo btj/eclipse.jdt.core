@@ -544,6 +544,7 @@ public abstract class AbstractMethodDeclaration
 			bindArguments();
 			resolveReceiver();
 			bindThrownExceptions();
+			resolveSpecification();
 			resolveAnnotations(this.scope, this.annotations, this.binding, this.isConstructor());
 			
 			long sourceLevel = this.scope.compilerOptions().sourceLevel;
@@ -611,6 +612,15 @@ public abstract class AbstractMethodDeclaration
 
 		if (this.receiver.type.hasNullTypeAnnotation(AnnotationPosition.ANY)) {
 			this.scope.problemReporter().nullAnnotationUnsupportedLocation(this.receiver.type);
+		}
+	}
+	public void resolveSpecification() {
+		//this.assertExpression.resolveTypeExpecting(scope, TypeBinding.BOOLEAN);
+		if (this.requiresClauses != null) {
+			for (RequiresClause clause : this.requiresClauses)
+				clause.expression.resolveTypeExpecting(this.scope, TypeBinding.BOOLEAN);
+			for (EnsuresClause clause : this.ensuresClauses)
+				clause.expression.resolveTypeExpecting(this.scope, TypeBinding.BOOLEAN);
 		}
 	}
 	public void resolveJavadoc() {
