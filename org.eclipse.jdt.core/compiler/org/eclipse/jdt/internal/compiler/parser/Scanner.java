@@ -1286,6 +1286,10 @@ protected int getNextToken0() throws InvalidInputException {
 					} else {
 						return TokenNameERROR;
 					}*/
+					if (this.source[this.currentPosition] == '*' && this.source[this.currentPosition + 1] == '/') {
+						this.currentPosition += 2;
+						return TokenNameSPECBRACKET;
+					}
 					return TokenNameAT;
 				case '(' :
 					return TokenNameLPAREN;
@@ -1711,6 +1715,8 @@ protected int getNextToken0() throws InvalidInputException {
 									}
 								}
 
+								if (this.currentCharacter == '@')
+									return TokenNameSPECBRACKET;
 								if (this.currentCharacter == '*') {
 									isJavadoc = true;
 									star = true;
@@ -2561,7 +2567,7 @@ public boolean isInModuleDeclaration() {
 			(this.activeParser != null ? this.activeParser.isParsingModuleDeclaration() : false);
 }
 protected boolean areRestrictedModuleKeywordsActive() {
-	return this.scanContext != null && this.scanContext != ScanContext.INACTIVE;
+	return this.scanContext != null && this.scanContext != ScanContext.INACTIVE; 
 }
 void updateScanContext(int token) {
 	switch (token) {
@@ -3193,7 +3199,7 @@ private int internalScanIdentifierOrKeyword(int index, int length, char[] data) 
 				default :
 					return TokenNameIdentifier;
 			}
-		case 'e' : //else extends exports
+		case 'e' : //else ensures extends exports
 			switch (length) {
 				case 4 :
 					if (data[++index] == 'l') {
@@ -3224,6 +3230,9 @@ private int internalScanIdentifierOrKeyword(int index, int length, char[] data) 
 								return TokenNameexports;
 							} else
 								return TokenNameIdentifier;
+						} else if (data[index] == 'n' && data[++index] == 's' && data[++index] == 'u'
+								&& data[++index] == 'r' && data[++index] == 'e' && data[++index] == 's') {
+							return TokenNameensures;
 						} else
 							return TokenNameIdentifier;
 				default :
@@ -3491,8 +3500,7 @@ private int internalScanIdentifierOrKeyword(int index, int length, char[] data) 
 					} else 
 						return TokenNameIdentifier;
 				case 8:
-					if (areRestrictedModuleKeywordsActive()
-						&& (data[++index] == 'e')
+					if ((data[++index] == 'e')
 						&& (data[++index] == 'q')
 						&& (data[++index] == 'u')
 						&& (data[++index] == 'i')

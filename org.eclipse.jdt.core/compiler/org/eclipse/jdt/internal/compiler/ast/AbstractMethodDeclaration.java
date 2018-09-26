@@ -62,6 +62,8 @@ public abstract class AbstractMethodDeclaration
 	public Receiver receiver;
 	public Argument[] arguments;
 	public TypeReference[] thrownExceptions;
+	public RequiresClause[] requiresClauses;
+	public EnsuresClause[] ensuresClauses;
 	public Statement[] statements;
 	public int explicitDeclarations;
 	public MethodBinding binding;

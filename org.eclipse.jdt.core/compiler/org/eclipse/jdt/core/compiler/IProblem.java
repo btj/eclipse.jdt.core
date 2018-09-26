@@ -2075,4 +2075,6 @@ void setSourceStart(int sourceStart);
 	/** @since 3.14 */
 	int VarIsNotAllowedHere = Syntax + 1511; // ''var'' is not allowed here
 	
+	/* Method Specifications */
+	int RequiresClauseAfterEnsuresClause = 4320;
 }

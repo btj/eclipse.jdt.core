@@ -49,6 +49,7 @@ $Terminals
 	protected public return short static strictfp super switch
 	synchronized this throw throws transient true try void
 	volatile while module open requires transitive exports opens to uses provides with
+	ensures
 
 	IntegerLiteral
 	LongLiteral
@@ -113,6 +114,7 @@ $Terminals
 	ElidedSemicolonAndRightBrace
 	AT308
 	AT308DOTDOTDOT
+	SPECBRACKET
 
 --    BodyMarker
 
@@ -170,6 +172,7 @@ $Alias
 	'...'  ::= ELLIPSIS
 	'@308' ::= AT308
 	'@308...' ::= AT308DOTDOTDOT
+	'/*@ or @*/' ::= SPECBRACKET
 	
 $Start
 	Goal
@@ -836,7 +839,7 @@ AbstractMethodDeclaration ::= MethodHeader ';'
  consumeMethodDeclaration(false, false); $break ./
 /:$readableName MethodDeclaration:/
 
-MethodHeader ::= MethodHeaderName FormalParameterListopt MethodHeaderRightParen MethodHeaderExtendedDims MethodHeaderThrowsClauseopt
+MethodHeader ::= MethodHeaderName FormalParameterListopt MethodHeaderRightParen MethodHeaderExtendedDims MethodHeaderThrowsClauseopt MethodSpecificationopt
 /.$putCase consumeMethodHeader(); $break ./
 /:$readableName MethodDeclaration:/
 
@@ -925,6 +928,29 @@ ClassTypeList ::= ClassTypeList ',' ClassTypeElt
 ClassTypeElt ::= ClassType
 /.$putCase consumeClassTypeElt(); $break ./
 /:$readableName ClassType:/
+
+MethodSpecificationopt -> $empty
+MethodSpecificationopt -> MethodSpecificationBlocks
+/.$putCase consumeMethodSpecification(); $break ./
+
+MethodSpecificationBlocks -> MethodSpecificationBlock
+MethodSpecificationBlocks -> MethodSpecificationBlocks MethodSpecificationBlock
+/.$putCase consumeMethodSpecificationBlocks(); $break ./
+
+MethodSpecificationBlock -> '/*@ or @*/' MethodSpecificationClauses '/*@ or @*/'
+
+MethodSpecificationClauses -> MethodSpecificationClause
+MethodSpecificationClauses -> MethodSpecificationClauses MethodSpecificationClause
+/.$putCase consumeMethodSpecificationClauses(); $break ./
+
+MethodSpecificationClause -> RequiresClause
+MethodSpecificationClause -> EnsuresClause
+
+RequiresClause -> 'requires' Expression ';'
+/.$putCase consumeRequiresClause(); $break ./
+
+EnsuresClause -> 'ensures' Expression ';'
+/.$putCase consumeEnsuresClause(); $break ./
 
 MethodBody ::= NestedMethod '{' BlockStatementsopt '}' 
 /.$putCase consumeMethodBody(); $break ./
