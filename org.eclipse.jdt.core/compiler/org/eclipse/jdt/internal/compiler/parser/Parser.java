@@ -5283,7 +5283,7 @@ protected void consumeRequiresClause() {
 	pushOnAstStack(new RequiresClause(this.expressionStack[this.expressionPtr--], this.intStack[this.intPtr--]));
 }
 protected void consumeEnsuresClause() {
-	// RequiresClause ::= 'requires' Expression ';'
+	// EnsuresClause ::= 'ensures' Expression ';'
 	this.expressionLengthPtr--;
 	pushOnAstStack(new EnsuresClause(this.expressionStack[this.expressionPtr--], this.intStack[this.intPtr--]));
 }

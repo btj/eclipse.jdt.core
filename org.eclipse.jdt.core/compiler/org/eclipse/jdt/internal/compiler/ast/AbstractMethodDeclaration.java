@@ -615,7 +615,6 @@ public abstract class AbstractMethodDeclaration
 		}
 	}
 	public void resolveSpecification() {
-		//this.assertExpression.resolveTypeExpecting(scope, TypeBinding.BOOLEAN);
 		if (this.requiresClauses != null) {
 			for (RequiresClause clause : this.requiresClauses)
 				clause.expression.resolveTypeExpecting(this.scope, TypeBinding.BOOLEAN);
