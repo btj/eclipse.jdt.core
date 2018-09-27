@@ -49,7 +49,6 @@ $Terminals
 	protected public return short static strictfp super switch
 	synchronized this throw throws transient true try void
 	volatile while module open requires transitive exports opens to uses provides with
-	ensures
 
 	IntegerLiteral
 	LongLiteral
@@ -115,6 +114,7 @@ $Terminals
 	AT308
 	AT308DOTDOTDOT
 	SPECBRACKET
+	ENSURES_OR_OLD
 
 --    BodyMarker
 
@@ -173,6 +173,7 @@ $Alias
 	'@308' ::= AT308
 	'@308...' ::= AT308DOTDOTDOT
 	'/*@ or @*/' ::= SPECBRACKET
+	'ensures or old' ::= ENSURES_OR_OLD
 	
 $Start
 	Goal
@@ -949,7 +950,7 @@ MethodSpecificationClause -> EnsuresClause
 RequiresClause -> 'requires' Expression ';'
 /.$putCase consumeRequiresClause(); $break ./
 
-EnsuresClause -> 'ensures' Expression ';'
+EnsuresClause -> 'ensures or old' Expression ';'
 /.$putCase consumeEnsuresClause(); $break ./
 
 MethodBody ::= NestedMethod '{' BlockStatementsopt '}' 
@@ -1515,6 +1516,11 @@ PrimaryNoNewArray ::= PrimitiveType '.' 'class'
 
 PrimaryNoNewArray -> MethodInvocation
 PrimaryNoNewArray -> ArrayAccess
+
+PrimaryNoNewArray -> OldExpression
+
+OldExpression -> 'ensures or old' '(' Expression ')'
+/.$putCase consumeOldExpression(); $break ./ 
 
 -----------------------------------------------------------------------
 --                   Start of rules for JSR 335

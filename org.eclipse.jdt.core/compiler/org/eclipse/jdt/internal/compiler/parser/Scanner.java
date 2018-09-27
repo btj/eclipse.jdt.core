@@ -3232,7 +3232,7 @@ private int internalScanIdentifierOrKeyword(int index, int length, char[] data) 
 								return TokenNameIdentifier;
 						} else if (data[index] == 'n' && data[++index] == 's' && data[++index] == 'u'
 								&& data[++index] == 'r' && data[++index] == 'e' && data[++index] == 's') {
-							return TokenNameensures;
+							return TokenNameENSURES_OR_OLD;
 						} else
 							return TokenNameIdentifier;
 				default :
@@ -3423,6 +3423,11 @@ private int internalScanIdentifierOrKeyword(int index, int length, char[] data) 
 							&& (data[++index] == 'n')
 							&& (data[++index] == 's'))
 						return TokenNameopens;
+					else
+						return TokenNameIdentifier;
+				case 3 :
+					if (data[++index] == 'l' && data[++index] == 'd')
+						return TokenNameENSURES_OR_OLD;
 					else
 						return TokenNameIdentifier;
 				default :
