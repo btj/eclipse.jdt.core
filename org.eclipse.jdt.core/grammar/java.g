@@ -116,6 +116,8 @@ $Terminals
 	AT308DOTDOTDOT
 	BeginCaseExpr
 	RestrictedIdentifierYield
+	SPEC_CLAUSE_START
+	SPEC_CLAUSE_END
 
 --    BodyMarker
 
@@ -661,6 +663,8 @@ Modifier -> 'synchronized'
 Modifier -> 'transient'
 Modifier -> 'volatile'
 Modifier -> 'strictfp'
+Modifier -> SPEC_CLAUSE_START Expression SPEC_CLAUSE_END
+/.$putCase consumeSpecClauseAsModifier(); $break ./
 Modifier ::= Annotation
 /.$putCase consumeAnnotationAsModifier(); $break ./
 /:$readableName Modifier:/

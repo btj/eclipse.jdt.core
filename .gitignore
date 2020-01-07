@@ -3,6 +3,7 @@
 *.rej
 *.bak
 *.patch
+*.class
 javacore.*
 heapdump.*
 core.*
