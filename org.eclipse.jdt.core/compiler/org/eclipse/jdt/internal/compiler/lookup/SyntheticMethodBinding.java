@@ -24,6 +24,7 @@ import java.util.stream.Stream;
 import org.eclipse.jdt.core.compiler.CharOperation;
 import org.eclipse.jdt.internal.compiler.ast.AbstractMethodDeclaration;
 import org.eclipse.jdt.internal.compiler.ast.FieldDeclaration;
+import org.eclipse.jdt.internal.compiler.ast.FormalSpecification;
 import org.eclipse.jdt.internal.compiler.ast.LambdaExpression;
 import org.eclipse.jdt.internal.compiler.ast.ReferenceExpression;
 import org.eclipse.jdt.internal.compiler.ast.SwitchStatement;
@@ -36,6 +37,7 @@ public class SyntheticMethodBinding extends MethodBinding {
 	public MethodBinding targetMethod;			// method or constructor
 	public TypeBinding targetEnumType; 			// enum type
 	public LambdaExpression lambda;
+	public FormalSpecification formalSpecification;
 	
 	/** Switch (one from many) linked to the switch table */
 	public SwitchStatement switchStatement; 
@@ -72,6 +74,7 @@ public class SyntheticMethodBinding extends MethodBinding {
      * Is never directly materialized in bytecode
      */
     public static final int SerializableMethodReference = 18;
+    public static final int FormalSpecification = 19;
     
 	public int sourceStart = 0; // start position of the matching declaration
 	public int index; // used for sorting access methods in the class file
@@ -379,6 +382,25 @@ public class SyntheticMethodBinding extends MethodBinding {
 	    this.parameters = new TypeBinding[] { purpose == SyntheticMethodBinding.ArrayConstructor ? TypeBinding.INT : (TypeBinding) arrayType};
 	    this.thrownExceptions = Binding.NO_EXCEPTIONS;
 	    this.purpose = purpose;
+		SyntheticMethodBinding[] knownAccessMethods = declaringClass.syntheticMethods();
+		int methodId = knownAccessMethods == null ? 0 : knownAccessMethods.length;
+		this.index = methodId;
+	}
+
+	public SyntheticMethodBinding(FormalSpecification formalSpecification, char[] selector,
+			SourceTypeBinding declaringClass) {
+		this.formalSpecification = formalSpecification;
+		this.declaringClass = declaringClass;
+		this.selector = selector;
+		this.modifiers = formalSpecification.method.binding.modifiers;
+		this.tagBits |= (TagBits.AnnotationResolved | TagBits.DeprecatedAnnotationResolved) | (formalSpecification.method.binding.tagBits & TagBits.HasParameterAnnotations);
+		this.returnType = TypeBinding.VOID;
+		this.thrownExceptions = Binding.NO_EXCEPTIONS;
+		this.parameters = formalSpecification.method.binding.parameters;
+	    TypeVariableBinding[] vars = Stream.of(this.parameters).filter(param -> param.isTypeVariable()).toArray(TypeVariableBinding[]::new);
+	    if (vars != null && vars.length > 0)
+	    	this.typeVariables = vars;
+	    this.purpose = SyntheticMethodBinding.FormalSpecification;
 		SyntheticMethodBinding[] knownAccessMethods = declaringClass.syntheticMethods();
 		int methodId = knownAccessMethods == null ? 0 : knownAccessMethods.length;
 		this.index = methodId;

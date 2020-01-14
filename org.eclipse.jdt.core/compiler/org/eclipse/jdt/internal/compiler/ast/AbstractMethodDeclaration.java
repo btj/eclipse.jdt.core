@@ -317,6 +317,9 @@ public abstract class AbstractMethodDeclaration
 			System.arraycopy(problems, 0, problemsCopy, 0, problemsLength);
 			classFile.addProblemMethod(this, this.binding, problemsCopy, problemResetPC);
 		}
+		
+		if (this.formalSpecification != null)
+			this.formalSpecification.generateCode();
 	}
 
 	public void generateCode(ClassFile classFile) {
@@ -364,6 +367,8 @@ public abstract class AbstractMethodDeclaration
 			checkArgumentsSize();
 		}
 		classFile.completeMethodInfo(this.binding, methodAttributeOffset, attributeNumber);
+		
+		
 	}
 
 	public void getAllAnnotationContexts(int targetType, List allAnnotationContexts) {

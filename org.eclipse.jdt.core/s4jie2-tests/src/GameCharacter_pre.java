@@ -12,4 +12,11 @@ class GameCharacter_pre {
 	public void takeDamage(int amount) {
 		this.health -= amount;
 	}
+	
+	public static void main(String[] args) throws Exception {
+		GameCharacter_pre c = new GameCharacter_pre();
+		java.lang.reflect.Method m = c.getClass().getMethod("takeDamageSpec", int.class);
+		m.invoke(c, -5);
+		System.out.println("Could invoke takeDamageSpec with argument -5");
+	}
 }

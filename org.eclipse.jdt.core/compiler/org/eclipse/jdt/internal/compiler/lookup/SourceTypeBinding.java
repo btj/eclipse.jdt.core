@@ -68,6 +68,7 @@ import org.eclipse.jdt.internal.compiler.ast.AbstractVariableDeclaration;
 import org.eclipse.jdt.internal.compiler.ast.Annotation;
 import org.eclipse.jdt.internal.compiler.ast.Argument;
 import org.eclipse.jdt.internal.compiler.ast.FieldDeclaration;
+import org.eclipse.jdt.internal.compiler.ast.FormalSpecification;
 import org.eclipse.jdt.internal.compiler.ast.LambdaExpression;
 import org.eclipse.jdt.internal.compiler.ast.MethodDeclaration;
 import org.eclipse.jdt.internal.compiler.ast.ReferenceExpression;
@@ -612,6 +613,25 @@ public SyntheticMethodBinding addSyntheticMethodForEnumInitialization(int begin,
 	this.synthetics[SourceTypeBinding.METHOD_EMUL].put(accessMethod.selector, accessors);
 	accessors[0] = accessMethod;
 	return accessMethod;
+}
+public SyntheticMethodBinding addSyntheticMethod(FormalSpecification specification) {
+	if (!isPrototype()) throw new IllegalStateException();
+	if (this.synthetics == null)
+		this.synthetics = new HashMap[MAX_SYNTHETICS];
+	if (this.synthetics[SourceTypeBinding.METHOD_EMUL] == null)
+		this.synthetics[SourceTypeBinding.METHOD_EMUL] = new HashMap(5);
+	
+	SyntheticMethodBinding specificationMethod = null;
+	SyntheticMethodBinding[] specificationMethods = (SyntheticMethodBinding[]) this.synthetics[SourceTypeBinding.METHOD_EMUL].get(specification);
+	if (specificationMethods == null) {
+		specificationMethod = new SyntheticMethodBinding(specification, CharOperation.concat(specification.method.selector, FormalSpecification.SPEC_METHOD_SUFFIX), this);
+		this.synthetics[SourceTypeBinding.METHOD_EMUL].put(specification, specificationMethods = new SyntheticMethodBinding[1]);
+		specificationMethods[0] = specificationMethod;
+	} else {
+		specificationMethod = specificationMethods[0];
+	}
+	
+	return specificationMethod;
 }
 public SyntheticMethodBinding addSyntheticMethod(LambdaExpression lambda) {
 	if (!isPrototype()) throw new IllegalStateException();

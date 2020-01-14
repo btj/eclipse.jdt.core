@@ -18,10 +18,14 @@ public class s4jie2TestSuite {
 		System.out.println("Test " + filename + " success");
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		test("Minimal", true);
 		
 		test("GameCharacter_pre", true);
+		ProcessBuilder builder = new ProcessBuilder("D:/jdk1.8.0_231/bin/java", "-classpath", "s4jie2-tests/bin;D:/s4jie2/codespecs/codespecs.jar", "GameCharacter_pre");
+		builder.inheritIO();
+		System.out.println("GameCharacter_pre execution terminated with exit code " + builder.start().waitFor());
+
 		test("GameCharacter_pre_fail", false);
 		test("GameCharacter_pre_type_error", false);
 		

@@ -46,6 +46,7 @@ import org.eclipse.jdt.internal.compiler.ast.ArrayAllocationExpression;
 import org.eclipse.jdt.internal.compiler.ast.ExplicitConstructorCall;
 import org.eclipse.jdt.internal.compiler.ast.Expression;
 import org.eclipse.jdt.internal.compiler.ast.FieldDeclaration;
+import org.eclipse.jdt.internal.compiler.ast.FormalSpecification;
 import org.eclipse.jdt.internal.compiler.ast.FunctionalExpression;
 import org.eclipse.jdt.internal.compiler.ast.LambdaExpression;
 import org.eclipse.jdt.internal.compiler.ast.OperatorIds;
@@ -4588,6 +4589,16 @@ public void invokeJavaLangClassDesiredAssertionStatus() {
 			ConstantPool.DesiredAssertionStatusSignature);
 }
 
+public void invokeCodespecsRequires() {
+	invoke(
+			Opcodes.OPC_invokestatic,
+			1,
+			0,
+			ConstantPool.CodeSpecsConstantPoolName,
+			ConstantPool.CodeSpecsRequires,
+			ConstantPool.CodeSpecsRequiresSignature);
+}
+
 public void invokeJavaLangEnumvalueOf(ReferenceBinding binding) {
 	// invokestatic: java.lang.Enum.valueOf(Class,String)
 	invoke(
@@ -6548,6 +6559,22 @@ public void reset(AbstractMethodDeclaration referenceMethod, ClassFile targetCla
 	this.preserveUnusedLocals = referenceMethod.scope.compilerOptions().preserveAllLocalVariables;
 	initializeMaxLocals(referenceMethod.binding);
 }
+
+public void reset(FormalSpecification formalSpecification, ClassFile targetClassFile) {
+	init(targetClassFile);
+	this.methodDeclaration = formalSpecification.method;
+	this.lambdaExpression = null;
+	int[] lineSeparatorPositions2 = this.lineSeparatorPositions;
+	if (lineSeparatorPositions2 != null) {
+		// TODO: Record formal specification sourceStart and sourceEnd and compute tighter lineNumberStart and lineNumberEnd
+		int length = lineSeparatorPositions2.length;
+		this.lineNumberStart = 0;
+		this.lineNumberEnd = length == 0 ? 1 : length;
+	}
+	this.preserveUnusedLocals = formalSpecification.method.scope.compilerOptions().preserveAllLocalVariables;
+	initializeMaxLocals(formalSpecification.binding);
+}
+
 
 public void reset(LambdaExpression lambda, ClassFile targetClassFile) {
 	init(targetClassFile);

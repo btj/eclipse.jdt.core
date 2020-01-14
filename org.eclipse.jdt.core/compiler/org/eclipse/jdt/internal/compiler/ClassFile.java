@@ -1029,6 +1029,10 @@ public class ClassFile implements TypeConstants, TypeIds {
 						case SyntheticMethodBinding.TooManyEnumsConstants :
 							addSyntheticEnumInitializationMethod(syntheticMethod);
 							break;
+						case SyntheticMethodBinding.FormalSpecification :
+							syntheticMethod.formalSpecification.generateCode(this.referenceBinding.scope, this);
+							continueScanningSynthetics = true; // formal specification code generation could schedule nested lambdas for code generation.
+							break;
 						case SyntheticMethodBinding.LambdaMethod:
 							syntheticMethod.lambda.generateCode(this.referenceBinding.scope, this);
 							continueScanningSynthetics = true; // lambda code generation could schedule additional nested lambdas for code generation.

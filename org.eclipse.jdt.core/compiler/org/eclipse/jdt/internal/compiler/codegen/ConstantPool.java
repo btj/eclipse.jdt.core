@@ -165,6 +165,7 @@ public class ConstantPool implements ClassFileConstants, TypeIds {
 	public static final char[] JavaLangClassNotFoundExceptionConstantPoolName = "java/lang/ClassNotFoundException".toCharArray(); //$NON-NLS-1$
 	public static final char[] JavaLangClassSignature = "Ljava/lang/Class;".toCharArray(); //$NON-NLS-1$
 	public static final char[] JavaLangDoubleConstantPoolName = "java/lang/Double".toCharArray(); //$NON-NLS-1$
+	public static final char[] CodeSpecsConstantPoolName = "codespecs/CodeSpecs".toCharArray(); //$NON-NLS-1$
 	public static final char[] JavaLangEnumConstantPoolName = "java/lang/Enum".toCharArray(); //$NON-NLS-1$
 	public static final char[] JavaLangErrorConstantPoolName = "java/lang/Error".toCharArray(); //$NON-NLS-1$
 	public static final char[] JavaLangIncompatibleClassChangeErrorConstantPoolName = "java/lang/IncompatibleClassChangeError".toCharArray(); //$NON-NLS-1$
@@ -251,6 +252,7 @@ public class ConstantPool implements ClassFileConstants, TypeIds {
 	public static final char[] ToString = "toString".toCharArray(); //$NON-NLS-1$
 	public static final char[] ToStringSignature = GetMessageSignature;
 	public static final char[] TYPE = "TYPE".toCharArray(); //$NON-NLS-1$
+	public static final char[] CodeSpecsRequires = "requires".toCharArray(); //$NON-NLS-1$
 	public static final char[] ValueOf = "valueOf".toCharArray(); //$NON-NLS-1$
 	public static final char[] ValueOfBooleanSignature = "(Z)Ljava/lang/String;".toCharArray(); //$NON-NLS-1$
 	public static final char[] ValueOfCharSignature = "(C)Ljava/lang/String;".toCharArray(); //$NON-NLS-1$
@@ -259,6 +261,7 @@ public class ConstantPool implements ClassFileConstants, TypeIds {
 	public static final char[] ValueOfIntSignature = "(I)Ljava/lang/String;".toCharArray(); //$NON-NLS-1$
 	public static final char[] ValueOfLongSignature = "(J)Ljava/lang/String;".toCharArray(); //$NON-NLS-1$
 	public static final char[] ValueOfObjectSignature = "(Ljava/lang/Object;)Ljava/lang/String;".toCharArray(); //$NON-NLS-1$
+	public static final char[] CodeSpecsRequiresSignature = "(Z)V".toCharArray(); //$NON-NLS-1$
 	public static final char[] ValueOfStringClassSignature = "(Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/Enum;".toCharArray(); //$NON-NLS-1$
 	public static final char[] JAVA_LANG_ANNOTATION_DOCUMENTED = "Ljava/lang/annotation/Documented;".toCharArray(); //$NON-NLS-1$
 	public static final char[] JAVA_LANG_ANNOTATION_ELEMENTTYPE = "Ljava/lang/annotation/ElementType;".toCharArray(); //$NON-NLS-1$
