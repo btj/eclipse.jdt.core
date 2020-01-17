@@ -118,6 +118,10 @@ public class MethodDeclaration extends AbstractMethodDeclaration {
 				// method of a non-static member type can't be static.
 				this.bits &= ~ASTNode.CanBeStatic;
 			}
+			
+			if (this.formalSpecification != null)
+				this.formalSpecification.analyzeCode(this.scope, methodContext, flowInfo);
+			
 			// propagate to statements
 			if (this.statements != null) {
 				boolean enableSyntacticNullAnalysisForFields = this.scope.compilerOptions().enableSyntacticNullAnalysisForFields;

@@ -150,17 +150,32 @@ public class s4jie2TestSuite {
 	}
 
 	public static void main(String[] args) throws IOException {
-		deleteFileTree(binPath);
+		if (new File(binPath).exists())
+			deleteFileTree(binPath);
 		
 		testCompile("Minimal", true, "", "");
 
 		testCompileAndRun("GameCharacter_pre", true, "",
-				"java.lang.AssertionError: Precondition does not hold\n" +
-				"	at GameCharacter.takeDamage(GameCharacter_pre.java:20)\n" +
-				"	at Main.main(GameCharacter_pre.java:36)\n" +
-				"java.lang.AssertionError: Precondition does not hold\n" +
-				"	at GameCharacter.<init>(GameCharacter_pre.java:9)\n" +
-				"	at Main.main(GameCharacter_pre.java:44)\n");
+				"java.lang.AssertionError: Precondition does not hold\n" + 
+				"	at GameCharacter.takeDamage$pre(GameCharacter_pre.java:20)\n" + 
+				"	at GameCharacter.takeDamage(GameCharacter_pre.java:24)\n" + 
+				"	at Main.main(GameCharacter_pre.java:58)\n" + 
+				"java.lang.AssertionError: Precondition does not hold\n" + 
+				"	at GameCharacter.takeDamage$pre(GameCharacter_pre.java:22)\n" + 
+				"	at GameCharacter.takeDamage(GameCharacter_pre.java:24)\n" + 
+				"	at Main.main(GameCharacter_pre.java:66)\n" + 
+				"java.lang.AssertionError: Precondition does not hold\n" + 
+				"	at GameCharacter.GameCharacter$pre(GameCharacter_pre.java:9)\n" + 
+				"	at GameCharacter.<init>(GameCharacter_pre.java:11)\n" + 
+				"	at Main.main(GameCharacter_pre.java:74)\n" + 
+				"java.lang.AssertionError: Precondition does not hold\n" + 
+				"	at PlayerCharacter.PlayerCharacter$pre(GameCharacter_pre.java:35)\n" + 
+				"	at PlayerCharacter.<init>(GameCharacter_pre.java:37)\n" + 
+				"	at Main.main(GameCharacter_pre.java:82)\n" + 
+				"java.lang.AssertionError: Precondition does not hold\n" + 
+				"	at Main.divide$pre(GameCharacter_pre.java:45)\n" + 
+				"	at Main.divide(GameCharacter_pre.java:46)\n" + 
+				"	at Main.main(GameCharacter_pre.java:90)\n");
 		testCompile("GameCharacter_pre_fail", false, "",
 				"----------\n" + 
 				"1. ERROR in SOURCE_FILE_FULL_PATH (at line 10)\n" + 

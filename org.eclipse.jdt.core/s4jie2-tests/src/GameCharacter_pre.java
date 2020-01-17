@@ -18,18 +18,40 @@ class GameCharacter {
 	 * Reduces this game character's health by the given amount.
 	 * @pre The given amount is nonnegative.
 	 *    | 0 <= amount
+	 * @pre The given amount is not greater than 10000.
+	 *    | amount <= 10000
 	 */
 	public void takeDamage(int amount) {
 		this.health -= amount;
 	}
 }
 
+class PlayerCharacter extends GameCharacter {
+	
+	/**
+	 * Initializes this game character with the given health.
+	 * @param health
+	 * @pre The given health is nonnegative.
+	 *     | 0 <= health
+	 */
+	public PlayerCharacter(int health) {
+		super(health);
+	}
+
+}
+
 class Main {
+	
+	/** @pre | y != 0 */
+	public static int divide(int x, int y) {
+		return x / y;
+	}
 
 	public static void main(String[] args) {
 		// Success case
 		GameCharacter c = new GameCharacter(5);
 		c.takeDamage(3);
+		divide(10, 3);
 
 		try {
 			// Failure case
@@ -41,7 +63,31 @@ class Main {
 
 		try {
 			// Failure case
+			c.takeDamage(200_000);
+			System.err.println("No exception was thrown! :-(");
+		} catch (AssertionError e) {
+			e.printStackTrace();
+		}
+
+		try {
+			// Failure case
 			new GameCharacter(-3);
+			System.err.println("No exception was thrown! :-(");
+		} catch (AssertionError e) {
+			e.printStackTrace();
+		}
+
+		try {
+			// Failure case
+			new PlayerCharacter(-5);
+			System.err.println("No exception was thrown! :-(");
+		} catch (AssertionError e) {
+			e.printStackTrace();
+		}
+
+		try {
+			// Failure case
+			divide(10, 0);
 			System.err.println("No exception was thrown! :-(");
 		} catch (AssertionError e) {
 			e.printStackTrace();

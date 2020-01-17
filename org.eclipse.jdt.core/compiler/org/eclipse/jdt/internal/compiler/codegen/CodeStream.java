@@ -46,6 +46,7 @@ import org.eclipse.jdt.internal.compiler.ast.ArrayAllocationExpression;
 import org.eclipse.jdt.internal.compiler.ast.ExplicitConstructorCall;
 import org.eclipse.jdt.internal.compiler.ast.Expression;
 import org.eclipse.jdt.internal.compiler.ast.FieldDeclaration;
+import org.eclipse.jdt.internal.compiler.ast.FormalSpecification;
 import org.eclipse.jdt.internal.compiler.ast.FunctionalExpression;
 import org.eclipse.jdt.internal.compiler.ast.LambdaExpression;
 import org.eclipse.jdt.internal.compiler.ast.OperatorIds;
@@ -6547,6 +6548,30 @@ public void reset(AbstractMethodDeclaration referenceMethod, ClassFile targetCla
 	}
 	this.preserveUnusedLocals = referenceMethod.scope.compilerOptions().preserveAllLocalVariables;
 	initializeMaxLocals(referenceMethod.binding);
+}
+
+public void reset(FormalSpecification formalSpecification, ClassFile targetClassFile) {
+	init(targetClassFile);
+	this.lambdaExpression = null;
+	this.methodDeclaration = formalSpecification.method;
+	int[] lineSeparatorPositions2 = this.lineSeparatorPositions;
+	if (lineSeparatorPositions2 != null) {
+		int length = lineSeparatorPositions2.length;
+		int lineSeparatorPositionsEnd = length - 1;
+		int start = Util.getLineNumber(formalSpecification.sourceStart(), lineSeparatorPositions2, 0, lineSeparatorPositionsEnd);
+		this.lineNumberStart = start;
+		if (start > lineSeparatorPositionsEnd) {
+			this.lineNumberEnd = start;
+		} else {
+			int end = Util.getLineNumber(formalSpecification.sourceEnd(), lineSeparatorPositions2, start - 1, lineSeparatorPositionsEnd);
+			if (end >= lineSeparatorPositionsEnd) {
+				end = length;
+			}
+			this.lineNumberEnd = end == 0 ? 1 : end;
+		}
+	}
+	this.preserveUnusedLocals = formalSpecification.method.scope.compilerOptions().preserveAllLocalVariables;
+	initializeMaxLocals(formalSpecification.preconditionMethodBinding);
 }
 
 public void reset(LambdaExpression lambda, ClassFile targetClassFile) {

@@ -317,6 +317,8 @@ public abstract class AbstractMethodDeclaration
 			System.arraycopy(problems, 0, problemsCopy, 0, problemsLength);
 			classFile.addProblemMethod(this, this.binding, problemsCopy, problemResetPC);
 		}
+		if (this.formalSpecification != null)
+			this.formalSpecification.generateCode(classScope, classFile);
 	}
 
 	public void generateCode(ClassFile classFile) {
@@ -340,6 +342,8 @@ public abstract class AbstractMethodDeclaration
 					argBinding.recordInitializationStartPC(0);
 				}
 			}
+			if (this.formalSpecification != null)
+				this.formalSpecification.generatePreconditionMethodCall(codeStream);
 			if (this.statements != null) {
 				for (int i = 0, max = this.statements.length; i < max; i++)
 					this.statements[i].generateCode(this.scope, codeStream);
